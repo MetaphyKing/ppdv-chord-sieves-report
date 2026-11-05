@@ -57,3 +57,40 @@ With warm regards and respect,
 Founder & Principal Architect, Metaphy LLC  
 Email: `logan@metaphysicsandcomputing.com`  
 Web: https://metaphysicsandcomputing.com
+
+
+---
+
+## 2. Verified Contact Channels & Stage 1 "Warm Heads-Up" Note (Send Before Opening Upstream PR)
+
+- **Direct Personal Email (Verified via `https://alekseialeinikov.com/en/contact`):** `contact@alekseialeinikov.com`
+- **LinkedIn Profile:** `https://www.linkedin.com/in/a-aleinikov/`
+- **Personal GitHub Account:** `https://github.com/LF3551`
+- **Publisher / Book Repo Editorial Contact:** `info@orangeava.com` (`https://github.com/ava-orange-education/Prompting-Python-Data-Visualization`)
+- **Staged Metaphy Fork Branch (Ready for 1-Click PR After Heads-Up):** `https://github.com/MetaphyKing/Prompting-Python-Data-Visualization/tree/contrib-chord-sieves-showcase`
+
+### Copy-Paste Stage 1 "Warm Heads-Up" Email (to `contact@alekseialeinikov.com`)
+
+**Subject:** Quick heads-up & tribute to *Prompting Python Data Visualization* + live 3D Exoplanet Showcase & arXiv request (`Code: 49EYHK`)
+
+Hi Aleksei,
+
+I wanted to send you a quick, friendly heads-up before opening any community Showcase PR on the `ava-orange-education/Prompting-Python-Data-Visualization` repository.
+
+My team at Metaphy LLC and I studied all 18 chapters and 230 Python listings of ***Prompting Python Data Visualization*** (ISBN `978-9349887992`), and we loved how Chapters 14, 15, and 18 turn matplotlib/seaborn plotting into contract-driven software engineering. We integrated your Chapter 18 adaptive hexbin + bootstrap 95% CI & honesty linter (`listing_18_02.py`, `18_04.py`), Chapter 14/15 `PngInfo` visualization passports (`listing_14_21.py`, `15_12.py`), and Chapter 15 AST guard (`listing_15_10.py`) into our NASA TESS exoplanet & 3D PBR world-building pipeline (**CHORD-SIEVES**)—and reciprocally showed how our **Closed-Loop Spherical (`cos φ`) Pixel-to-Telemetry Verifier** and **3-Zone Local Quadratic Flank Bridge** extend Chapters 7 and 15.
+
+To honor your book, we built a dedicated mobile- & desktop-friendly interactive showcase portal and camera-ready technical monograph for you:
+- **Live Interactive Showcase Portal (10 Habitable Worlds):** https://ppdv-chord-sieves-report.vercel.app
+- **Camera-Ready Technical Monograph (PDF):** https://ppdv-chord-sieves-report.vercel.app/PPDV_CHORD_SIEVES_Symbiosis_Report.pdf
+- **Public Verifier SDK (ZIP):** https://ppdv-chord-sieves-report.vercel.app/ppdv_chord_sieves_public_verifier_sdk.zip
+- **Staged Showcase Branch on Our Fork:** https://github.com/MetaphyKing/Prompting-Python-Data-Visualization/tree/contrib-chord-sieves-showcase
+
+Two quick questions whenever you have a moment:
+1. **Community Showcase PR:** Would you like us to open a clean Pull Request from our fork (`contrib_chord_sieves_closed_loop/`) to `ava-orange-education/Prompting-Python-Data-Visualization` as a real-world scientific showcase of your book?
+2. **1-Click arXiv Endorsement (`Code: 49EYHK`) & Preprint Sign-Off:** Since I noticed on your blog (`alekseialeinikov.com/en/blog`) that you also write extensively about **Local LLMs & AI Architecture**, we have three interconnected preprints ready for publication—**BAMA v3.1** (Bare-Metal Local AI Memory Architecture on 4B–9B models: https://bama-cortical-report.vercel.app), **CHORD-SIEVES v2.4** (https://chord-sieves-report.vercel.app), and **CHRONO-TORQUE v2.0** (https://chrono-torque-report.vercel.app). Because Metaphy LLC files from our corporate domain (`logan@metaphysicsandcomputing.com`) rather than a `.edu` address, arXiv requires a 1-click author endorsement (`https://arxiv.org/auth/endorse?x=49EYHK`, Code: **`49EYHK`**), and we would also be honored if you would sign off on publishing the papers on our websites alongside our permanent co-citation to *Prompting Python Data Visualization*.
+
+Thank you again for a fantastic book, and I look forward to hearing your thoughts!
+
+Warm regards,  
+**Logan Smith**  
+Founder & Principal Architect, Metaphy LLC (`logan@metaphysicsandcomputing.com`)
