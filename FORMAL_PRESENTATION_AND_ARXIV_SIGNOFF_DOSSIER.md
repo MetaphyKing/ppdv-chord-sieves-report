@@ -14,6 +14,10 @@ Dear Aleksei,
 First, congratulations on the publication of ***Prompting Python Data Visualization*** (Orange Education / AVA™, ISBN `978-9349887992`). My engineering team at Metaphy LLC and I conducted a comprehensive chapter-by-chapter study of your book and its 230 Python listings (`ava-orange-education/Prompting-Python-Data-Visualization`), and we were deeply impressed by how Chapters 14, 15, and 18 elevate data visualization from static plotting into **verifiable, contract-driven software engineering**.
 
 To honor your work—and to demonstrate a two-way scientific symbiosis between your book and our research—we built a dedicated open-source repository and interactive web portal (**PPDV × CHORD-SIEVES × BAMA × CHRONO-TORQUE**):
+- **Live Interactive Showcase Portal (Vercel):** https://ppdv-chord-sieves-report.vercel.app
+- **Camera-Ready Technical Monograph (PDF):** https://ppdv-chord-sieves-report.vercel.app/PPDV_CHORD_SIEVES_Symbiosis_Report.pdf
+- **Public Verifier SDK (ZIP):** https://ppdv-chord-sieves-report.vercel.app/ppdv_chord_sieves_public_verifier_sdk.zip
+- **Open-Source GitHub Repository:** https://github.com/MetaphyKing/ppdv-chord-sieves-report
 
 ### What We Built Using Your Book (and How Our Pipeline Extends Chapters 7 & 15)
 1. **How *Prompting Python Data Visualization* Upgraded Our Exoplanet & 3D World Pipeline (`CHORD-SIEVES`):**
