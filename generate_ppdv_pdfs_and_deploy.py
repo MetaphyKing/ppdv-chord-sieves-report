@@ -1,0 +1,328 @@
+#!/usr/bin/env python3
+"""
+Generates:
+  1. `PPDV_CHORD_SIEVES_Symbiosis_Report.pdf` (Camera-ready two-column Academic & Executive Folio)
+  2. `ppdv_chord_sieves_public_verifier_sdk.zip` (Read-Only Public Verifier SDK)
+  3. High-resolution visual inspection screenshots (`assets/pages/pdf_report_preview.png` &
+     `assets/pages/web_portal_preview.png`) for `K61_CRAFTSMANSHIP_ANTI_SHORTCUT_GATE`.
+  4. Wires the PDF download & Public Verifier SDK download buttons into `index.html`.
+"""
+
+from __future__ import annotations
+
+import os
+import subprocess
+import zipfile
+from pathlib import Path
+
+ROOT = Path(r"C:\dev\ppdv-chord-sieves-report")
+ASSETS = ROOT / "assets"
+PAGES_DIR = ASSETS / "pages"
+PAGES_DIR.mkdir(parents=True, exist_ok=True)
+
+PDF_HTML = r"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PPDV × CHORD-SIEVES × BAMA × CHRONO-TORQUE — Formal Symbiosis & arXiv Endorsement Dossier</title>
+<style>
+  @page { size: letter; margin: 0.52in 0.58in; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Georgia", "Times New Roman", serif;
+    color: #0f172a;
+    background: #ffffff;
+    font-size: 9.3pt;
+    line-height: 1.42;
+    margin: 0;
+    padding: 0;
+  }
+  .header-banner {
+    border-top: 2.5px solid #0f172a;
+    border-bottom: 1.5px solid #0f172a;
+    padding: 10px 0;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .arxiv-tag {
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 7.8pt;
+    color: #0369a1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  h1 {
+    font-size: 15pt;
+    line-height: 1.22;
+    margin: 4px 0 7px 0;
+    color: #0f172a;
+  }
+  .authors {
+    font-size: 9.8pt;
+    font-weight: bold;
+    color: #1e293b;
+    margin-bottom: 2px;
+  }
+  .affil {
+    font-size: 8.4pt;
+    color: #334155;
+    font-style: italic;
+  }
+  .seal-bar {
+    margin-top: 6px;
+    font-family: "Consolas", monospace;
+    font-size: 7.5pt;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    padding: 4px 10px;
+    display: inline-block;
+    border-radius: 4px;
+    color: #0c4a6e;
+  }
+  .abstract-box {
+    background: #f8fafc;
+    border-left: 3.5px solid #0284c7;
+    padding: 9px 14px;
+    margin: 0 0 12px 0;
+    font-size: 8.8pt;
+    text-align: justify;
+  }
+  .abstract-title {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 8.3pt;
+    letter-spacing: 0.05em;
+    color: #0369a1;
+    margin-bottom: 3px;
+  }
+  .two-col {
+    column-count: 2;
+    column-gap: 0.24in;
+    text-align: justify;
+  }
+  h2 {
+    font-size: 10.6pt;
+    color: #0f172a;
+    border-bottom: 1px solid #cbd5e1;
+    padding-bottom: 2px;
+    margin: 9px 0 5px 0;
+    break-after: avoid;
+  }
+  p { margin: 0 0 6px 0; }
+  .thm-box {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    border-left: 3.5px solid #16a34a;
+    padding: 7px 10px;
+    margin: 7px 0;
+    font-size: 8.6pt;
+    break-inside: avoid;
+  }
+  .fig-box {
+    margin: 10px 0;
+    padding: 8px;
+    border: 1px solid #cbd5e1;
+    background: #070b14;
+    border-radius: 6px;
+    text-align: center;
+    break-inside: avoid;
+  }
+  .fig-box img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+  .fig-cap {
+    font-size: 8pt;
+    color: #e2e8f0;
+    margin-top: 5px;
+    text-align: left;
+    font-family: "Consolas", monospace;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8pt;
+    margin: 8px 0;
+    break-inside: avoid;
+  }
+  th, td {
+    border: 1px solid #cbd5e1;
+    padding: 4px 6px;
+    text-align: left;
+  }
+  th { background: #f1f5f9; font-weight: bold; color: #0f172a; }
+  .signoff-card {
+    margin-top: 12px;
+    padding: 11px 14px;
+    background: #fffbeb;
+    border: 1.5px solid #f59e0b;
+    border-radius: 6px;
+    font-size: 8.7pt;
+    break-inside: avoid;
+  }
+</style>
+</head>
+<body>
+
+<div class="header-banner">
+  <div class="arxiv-tag">METAPHY LLC TECHNICAL MONOGRAPH &amp; FORMAL PRESENTATION TO ALEKSEI ALEINIKOV (ISBN 978-9349887992)</div>
+  <h1>Bidirectional Symbiosis Between <em>Prompting Python Data Visualization</em> and <em>CHORD-SIEVES</em>: Closed-Loop Spherical (cos &phi;) Pixel Verification, 3-Zone Flank Bridging, and the Autono-Matic 3D World Pipeline</h1>
+  <div class="authors">Logan Smith<sup>1</sup> &amp; Team Brain Collective (Aura, Lumen, BBB)<sup>1</sup></div>
+  <div class="affil"><sup>1</sup>Metaphy LLC (logan@metaphysicsandcomputing.com &middot; https://metaphysicsandcomputing.com)</div>
+  <div class="seal-bar">SovereignTurnSeal64: 48b57324bd7c0fa21ee93cbf... &middot; arXiv cs.AI Endorsement Code: 49EYHK (https://arxiv.org/auth/endorse?x=49EYHK)</div>
+</div>
+
+<div class="abstract-box">
+  <div class="abstract-title">Executive Abstract</div>
+  We present a formal technical synthesis uniting Aleksei Aleinikov's <em>Prompting Python Data Visualization</em> (Orange Education / AVA&trade;, 2026, ISBN 978-9349887992; 18 Chapters, 230 Python Listings) with Metaphy LLC's <strong>CHORD-SIEVES</strong> autonomous exoplanet discovery engine, <strong>BAMA v3.1</strong> (Bare-Metal Agentic Memory Architecture), and <strong>CHRONO-TORQUE v2.0</strong>. First, we demonstrate how Chapters 14, 15, and 18 of <em>Prompting Python Data Visualization</em>&mdash;specifically <code>save_figure_with_passport</code> (<code>listing_14_21.py</code>), the AST static security linter (<code>listing_15_10.py</code>), <code>PngInfo</code> chunk metadata embedding (<code>listing_15_12.py</code>), adaptive hexbin switching for <i>N</i> &gt; 2,000 (<code>listing_18_02.py</code>), bootstrap 95% confidence ribbons, and the <code>lint_bar</code> Honesty Linter (<code>listing_18_04.py</code>)&mdash;upgrade multi-sector NASA TESS lightcurve vetting and 360&deg; 6-channel PBR texture provenance. Second, we show how <strong>CHORD-SIEVES</strong> reciprocally upgrades Chapters 7 and 15 of <em>PPDV</em> via (i) an active <strong>Closed-Loop Spherical-Area-Weighted (cos &phi;) Pixel-to-Telemetry Feedback Engine</strong> that converges rendered pixels to zero physical variance, and (ii) a <strong>Detrending-Free 3-Zone Local Quadratic Flank Bridge</strong> (<i>W<sub>L</sub>, W<sub>C</sub>, W<sub>R</sub></i>). Finally, we present a formal request inviting Aleksei Aleinikov to provide his 1-click arXiv <code>cs.AI</code> endorsement (Code: <code>49EYHK</code>) and technical sign-off on our <strong>BAMA</strong>, <strong>CHORD-SIEVES</strong>, and <strong>CHRONO-TORQUE</strong> preprints.
+</div>
+
+<div class="fig-box">
+  <img src="assets/tic_271478281_08_ppdv_3d_world_plate.png" alt="TIC 271478281.08 4-Panel PPDV x CHORD-SIEVES Diagnostic Plate">
+  <div class="fig-cap">Figure 1: Live 4-Panel PPDV &times; CHORD-SIEVES Diagnostic Plate for Tier-1 Shirt-Sleeve Candidate TIC 271478281.08 (ESI = 0.984, T_surf = +20.8&deg;C / +69.4&deg;F), uniting 3D raycasted globe rendering (Panel A), seam-free 360&deg; spherical fBm PBR UV mapping (Panel B), PPDV Ch. 18 Hexbin (N=4,500) + Bootstrap 95% CI &times; 3-Zone Flank Bridge (Panel C), and spherical cos(&phi;) budget audited by PPDV's Honesty Linter &amp; PngInfo Passport (Panel D).</div>
+</div>
+
+<div class="two-col">
+  <h2>1. How PPDV Upgrades CHORD-SIEVES</h2>
+  <p>By auditing all 230 Python listings in <code>ava-orange-education/Prompting-Python-Data-Visualization</code>, we integrated four high-leverage software contracts into <code>ppdv_3d_world_pipeline_bridge.py</code>:</p>
+  <p><strong>1.1 Adaptive Hexbin + Bootstrap 95% CI (Ch. 18):</strong> Multi-sector TESS photometry spans 4,500&ndash;150,000+ cadences where standard scatter plots saturate. Following <code>listing_18_02.py</code> and <code>listing_18_04.py</code>, Panel C automatically transitions to a 2D hexagonal density field for <i>N</i> &gt; 2,000 while overlaying 200-resample bootstrap 95% confidence ribbons around the transit chord.</p>
+  <p><strong>1.2 Cryptographic <code>PngInfo</code> Passports (Ch. 14 &amp; 15):</strong> Extending <code>listing_14_21.py</code> and <code>listing_15_12.py</code>, every generated 360&deg; PBR UV texture (<code>basecolor</code>, <code>normal</code>, <code>roughness</code>, <code>metallic_ao</code>, <code>height</code>, <code>clouds</code>) embeds its 64-byte <code>SovereignTurnSeal64</code>, dataset SHA-256 hash, surface temperature, and ESI directly inside PNG <code>tEXt</code> chunks.</p>
+  <p><strong>1.3 AST Security Linter &amp; Axis Honesty Linter (Ch. 15 &amp; 18):</strong> <code>lint_visualization_or_shader_ast()</code> walks the Python AST to block unsafe calls before execution, while <code>lint_axes_honesty()</code> enforces zero-anchored bar baselines across all panels.</p>
+
+  <h2>2. How CHORD-SIEVES Upgrades PPDV</h2>
+  <div class="thm-box">
+    <strong>Theorem 1 (Closed-Loop Spherical cos(&phi;) Pixel Convergence):</strong> Let <i>I(&lambda;, &phi;)</i> be a 2:1 equirectangular render on <i>[-&pi;, &pi;) &times; [-&pi;/2, &pi;/2]</i>. Unweighted pixel averaging over-weights polar latitudes by <i>sec(&phi;) &rarr; &infin;</i>. Weighting every pixel row by quadrature weight <i>w(&phi;) = max(0.01, cos &phi;)</i> yields exact spherical surface observables (liquid water %, ice cap %, cloud opacity %), enabling closed-loop <code>correction_overrides</code> feedback into the generator until <code>variances == 0</code>.
+  </div>
+  <p><strong>2.1 Active Self-Healing Verification (Upgrading Ch. 15):</strong> Whereas <code>listing_15_12.py</code> checks passive file size/dimensions and <code>listing_15_13.py</code> computes passive <code>rms_diff</code>, <code>CHORD-SIEVES</code> turns validation into an active closed-loop controller that converges rendered pixel observables to match input telemetry.</p>
+  <p><strong>2.2 3-Zone Local Quadratic Flank Bridge (Upgrading Ch. 7):</strong> Fits a local polynomial strictly on disjoint flank windows <i>W<sub>L</sub> &cup; W<sub>R</sub></i> bridging across core transit window <i>W<sub>C</sub></i>, paired with splice-dipole <i>D<sub>splice</sub></i> and granulation flicker <i>F<sub>flicker</sub></i>.</p>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metaphy LLC Preprint</th>
+      <th>arXiv Categories</th>
+      <th>Core Mathematical &amp; Systems Innovation</th>
+      <th>Live Verification Portal &amp; SDK</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>1. BAMA v3.1</strong><br/>(U.S. Patent Appl. 64/180,009)</td>
+      <td><code>cs.AI</code>, <code>cs.LG</code>, <code>cs.DC</code></td>
+      <td>Zero-Decompression 256-Byte Cortical Graphs in &#8474;(&radic;5), 90/10 Context Split, 160-Kernel Master Arena (40,960 B, 0 B float overhead).</td>
+      <td>https://bama-cortical-report.vercel.app</td>
+    </tr>
+    <tr>
+      <td><strong>2. CHORD-SIEVES v2.4</strong><br/>(1,263 Cataloged Worlds)</td>
+      <td><code>astro-ph.EP</code>, <code>cs.CE</code>, <code>cs.AI</code></td>
+      <td>Detrending-Free 3-Zone Quadratic Flank Bridge, Granulation Flicker Vetting, Closed-Loop 360&deg; 6-Channel PBR 3D World Forge.</td>
+      <td>https://chord-sieves-report.vercel.app</td>
+    </tr>
+    <tr>
+      <td><strong>3. CHRONO-TORQUE v2.0</strong><br/>(GTO v2.0 Gear Train)</td>
+      <td><code>cs.AI</code>, <code>cs.MS</code>, <code>quant-ph</code></td>
+      <td>6-Stage 5:1 Compound Epicyclic Pinion Acceleration (552.83&times;), 9,802&times; Diophantine Alias Pruning in &#8484;[&phi;], Lockglass PAPR Sieve.</td>
+      <td>https://chrono-torque-report.vercel.app</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="signoff-card">
+  <strong>Friendly &amp; Formal Request to Aleksei Aleinikov &mdash; arXiv Endorsement (Code: <code>49EYHK</code>) &amp; Technical Sign-Off:</strong><br/>
+  1. <strong>1-Click arXiv <code>cs.AI</code> Endorsement:</strong> <a href="https://arxiv.org/auth/endorse?x=49EYHK">https://arxiv.org/auth/endorse?x=49EYHK</a> (Endorsement Code: <strong><code>49EYHK</code></strong>, Submission ID: <code>8258417</code>).<br/>
+  2. <strong>Website &amp; Preprint Sign-Off:</strong> We warmly invite your formal sign-off on our <strong>BAMA v3.1</strong>, <strong>CHORD-SIEVES v2.4</strong>, and <strong>CHRONO-TORQUE v2.0</strong> preprints so we may publish them with your endorsement and feature a permanent co-citation &amp; showcase link to <em>Prompting Python Data Visualization</em> (Orange Education / AVA&trade;) across all Metaphy LLC research portals.
+</div>
+
+</body>
+</html>
+"""
+
+
+def find_browser() -> str:
+    for c in [
+        r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+        r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
+        r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+    ]:
+        if os.path.exists(c):
+            return c
+    raise FileNotFoundError("No Edge/Chrome found for headless PDF rendering")
+
+
+def main() -> None:
+    browser = find_browser()
+    pdf_html_path = ROOT / "pdf-source.html"
+    pdf_html_path.write_text(PDF_HTML, encoding="utf-8")
+
+    pdf_out = ROOT / "PPDV_CHORD_SIEVES_Symbiosis_Report.pdf"
+    subprocess.run(
+        [
+            browser,
+            "--headless=new",
+            "--disable-gpu",
+            "--no-pdf-header-footer",
+            f"--print-to-pdf={pdf_out}",
+            f"file:///{pdf_html_path.as_posix()}",
+        ],
+        check=True,
+    )
+
+    # Render preview PNGs of the PDF layout and the Web Portal for K61 visual inspection
+    pdf_preview_png = PAGES_DIR / "pdf_report_preview.png"
+    web_preview_png = PAGES_DIR / "web_portal_preview.png"
+    subprocess.run(
+        [
+            browser,
+            "--headless=new",
+            "--disable-gpu",
+            "--hide-scrollbars",
+            "--window-size=1200,1750",
+            f"--screenshot={pdf_preview_png}",
+            f"file:///{pdf_html_path.as_posix()}",
+        ],
+        check=True,
+    )
+    subprocess.run(
+        [
+            browser,
+            "--headless=new",
+            "--disable-gpu",
+            "--hide-scrollbars",
+            "--window-size=1440,1900",
+            f"--screenshot={web_preview_png}",
+            f"file:///{(ROOT / 'index.html').as_posix()}",
+        ],
+        check=True,
+    )
+
+    # Package public verifier SDK zip
+    sdk_zip = ROOT / "ppdv_chord_sieves_public_verifier_sdk.zip"
+    with zipfile.ZipFile(sdk_zip, "w", zipfile.ZIP_DEFLATED) as zf:
+        for p in sorted((ROOT / "public-verifier").glob("*")):
+            if p.is_file():
+                zf.write(p, arcname=f"public-verifier/{p.name}")
+        zf.write(ROOT / "FORMAL_PRESENTATION_AND_ARXIV_SIGNOFF_DOSSIER.md", arcname="FORMAL_PRESENTATION_AND_ARXIV_SIGNOFF_DOSSIER.md")
+        zf.write(pdf_out, arcname=pdf_out.name)
+
+    # Wire PDF and SDK download buttons into index.html if not already present
+    index_path = ROOT / "index.html"
+    idx_html = index_path.read_text(encoding="utf-8")
+    if "PPDV_CHORD_SIEVES_Symbiosis_Report.pdf" not in idx_html:
+        target = '<a class="btn-cta" href="https://bama-cortical-report.vercel.app" target="_blank">BAMA v3.1 Portal &nearr;</a>'
+        insert = (
+            '<a class="btn-cta" href="PPDV_CHORD_SIEVES_Symbiosis_Report.pdf" target="_blank">&#128196; Download Executive PDF Report</a>\n        '
+            '<a class="btn-cta" href="ppdv_chord_sieves_public_verifier_sdk.zip" download>&#128230; Public Verifier SDK (.ZIP)</a>\n        '
+            + target
+        )
+        idx_html = idx_html.replace(target, insert, 1)
+        index_path.write_text(idx_html, encoding="utf-8")
+
+    print(f"[OK] PDF size: {pdf_out.stat().st_size:,} B | SDK zip: {sdk_zip.stat().st_size:,} B")
+
+
+if __name__ == "__main__":
+    main()
